@@ -17,6 +17,10 @@ else
   echo "Keystone hasn't been built" >> /tmp/openstack.zea
 fi
 
+# Firewall
+
+lokkit -p 5672:tcp
+
 # Export
 
 export OS_SERVICE_TOKEN=$ADMIN_TOKEN

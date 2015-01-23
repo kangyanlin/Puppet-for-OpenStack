@@ -138,5 +138,6 @@ class telemetry_config{
     require => Service['mongod'],
     unless  => '/bin/more /tmp/openstack.zea|/bin/grep MongoDB',
     command => '/bin/sh /tmp/telemetry_config.sh',
+    notify  => Class['glance_service'],
   }
 }

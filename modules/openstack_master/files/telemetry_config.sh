@@ -38,3 +38,10 @@ openstack-config --set /etc/ceilometer/ceilometer.conf service_credentials os_au
 openstack-config --set /etc/ceilometer/ceilometer.conf service_credentials os_username ceilometer
 openstack-config --set /etc/ceilometer/ceilometer.conf service_credentials os_tenant_name service
 openstack-config --set /etc/ceilometer/ceilometer.conf service_credentials os_password ceilometer
+
+# For Glance
+
+openstack-config --set /etc/glance/glance-api.conf DEFAULT notification_driver messaging
+openstack-config --set /etc/glance/glance-api.conf DEFAULT rpc_backend qpid
+echo "Telemetry for Glance" >> /tmp/openstack.zea
+

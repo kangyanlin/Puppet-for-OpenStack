@@ -62,13 +62,6 @@ class glance_service{
     hasstatus  => true,
     hasrestart => true,
   }
-#  service{ 'openstack-glance-registry':
-#    require    => Class['glance_config'],
-#    ensure     => running,
-#    enable     => true,
-#    hasstatus  => true,
-#    hasrestart => true,
-#  }
 }
 
 class nova_service{
