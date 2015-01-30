@@ -1,51 +1,17 @@
 class openstack_master::install{
-  include base_install, sql_install, mess_install, keystone_install, glance_install, nova_install, dashboard_install, telemetry_install
+  include base_install, openstack_install
 }
 
 class base_install{
-  package { ['ntp', 'yum-plugin-priorities', 'openstack-utils', 'openstack-selinux']:
-    ensure => installed,
+  package { ['ntp', 'yum-plugin-priorities', 'openstack-utils', 'openstack-selinux', 'mysql-server', 'mysql', 'MySQL-python', 'qpid-cpp-server']:
+    require => Class['yum_config'],
+    ensure  => installed,
   }
 }
 
-class sql_install{
-  package { ['mysql-server', 'mysql', 'MySQL-python']:
-    ensure => installed,
-  }
-}
-
-class mess_install{
-  package { ['qpid-cpp-server']:
-    ensure => installed,
-  }
-}
-
-class keystone_install{
-  package { ['openstack-keystone', 'python-keystoneclient']:
-    ensure => installed,
-  }
-}
-
-class glance_install{
-  package { ['openstack-glance', 'python-glanceclient']:
-    ensure => installed,
-  }
-}
-
-class nova_install{
-  package { ['openstack-nova-api', 'openstack-nova-cert', 'openstack-nova-conductor', 'openstack-nova-console', 'openstack-nova-novncproxy', 'openstack-nova-scheduler', 'python-novaclient']:
-    ensure => installed;
-  }
-}
-
-class dashboard_install{
-  package { ['memcached', 'python-memcached', 'mod_wsgi', 'openstack-dashboard']:
-    ensure => installed;
-  }
-}
-
-class telemetry_install{
-  package { ['openstack-ceilometer-api', 'openstack-ceilometer-collector', 'openstack-ceilometer-notification', 'openstack-ceilometer-central', 'openstack-ceilometer-alarm', 'python-ceilometerclient', 'mongodb-server', 'mongodb']:
-    ensure => installed;
+class openstack_install{
+  package { ['openstack-keystone', 'python-keystoneclient', 'openstack-glance', 'python-glanceclient', 'openstack-nova-api', 'openstack-nova-cert', 'openstack-nova-conductor', 'openstack-nova-console', 'openstack-nova-novncproxy', 'openstack-nova-scheduler', 'python-novaclient', 'memcached', 'python-memcached', 'mod_wsgi', 'openstack-dashboard', 'openstack-ceilometer-api', 'openstack-ceilometer-collector', 'openstack-ceilometer-notification', 'openstack-ceilometer-central', 'openstack-ceilometer-alarm', 'python-ceilometerclient', 'mongodb-server', 'mongodb']:
+    require => Class['base_install'],
+    ensure  => installed,
   }
 }

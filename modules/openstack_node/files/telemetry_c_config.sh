@@ -2,8 +2,8 @@
 
 # Values
 
-MASTERIP="10.2.20.91"
-CEILOMETER_TOKEN=""
+MASTERIP="10.2.20.175"
+CEILOMETER_TOKEN="ZEASTION"
 
 # Modify NOVA configuration file for Telemetry
 
@@ -11,10 +11,10 @@ openstack-config --set /etc/nova/nova.conf DEFAULT instance_usage_audit True
 openstack-config --set /etc/nova/nova.conf DEFAULT instance_usage_audit_period hour
 openstack-config --set /etc/nova/nova.conf DEFAULT notify_on_state_change vm_and_task_state
 
-sed -i "/notify_on_state_change = vm_and_task_state/a notification_driver=nova.openstack.common.notifier.rpc_notifier\nnotification_driver=ceilometer.compute.nova_notifier" /etc/nova/nova/conf
-echo "Telemetry for nova compute" >> /tmp/openstack_c.zea
+sed -i "/notify_on_state_change = vm_and_task_state/a notification_driver=nova.openstack.common.notifier.rpc_notifier\nnotification_driver=ceilometer.compute.nova_notifier" /etc/nova/nova.conf
+echo "Telemetry for Nova Compute" >> /tmp/openstack_c.zea
 
-# Modify Telemetry configuration files
+# Modify TELEMETRY configuration files
 
 openstack-config --set /etc/ceilometer/ceilometer.conf publisher metering_secret $CEILOMETER_TOKEN
 openstack-config --set /etc/ceilometer/ceilometer.conf DEFAULT rpc_backend ceilometer.openstack.common.rpc.impl_qpid

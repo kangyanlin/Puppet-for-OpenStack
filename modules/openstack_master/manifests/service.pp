@@ -32,6 +32,13 @@ class sql_service{
     hasrestart => true,
     enable     => true,
   }
+  service{ ['mongod']:
+    require    => Class['sql_config'],
+    ensure     => running,
+    enable     => true,
+    hasstatus  => true,
+    hasrestart => true,
+  }
 }
 
 class mess_service{
@@ -85,13 +92,6 @@ class dashboard_service{
 }
 
 class telemetry_service{
-  service{ ['mongod']:
-    require    => File['mongodb.conf'],
-    ensure     => running,
-    enable     => true,
-    hasstatus  => true,
-    hasrestart => true,
-  }
   service{ ['openstack-ceilometer-api', 'openstack-ceilometer-notification', 'openstack-ceilometer-central', 'openstack-ceilometer-collector', 'openstack-ceilometer-alarm-evaluator', 'openstack-ceilometer-alarm-notifier']:
     require    => Class['telemetry_config'],
     ensure     => running,

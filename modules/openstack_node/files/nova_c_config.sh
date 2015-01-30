@@ -2,8 +2,14 @@
 
 # Values
 
+HOSTNM=`hostname`
 HOSTIP=`ifconfig|grep 'inet addr:'|grep -v '127.0.0.1'|grep -v '192.168.122.1'|cut -d: -f2|awk '{print $1}'`
-MASTERIP="10.2.20.91"
+MASTERIP="10.2.20.175"
+MASTERNM="host01.server.cs2c"
+
+# Set FQDN
+
+echo -e "$MASTERIP\t$MASTERNM\n$HOSTIP\t$HOSTNM" >> /etc/hosts
 
 echo -e "MASTERIP is $MASTERIP | HOSTIP is $HOSTIP" >> /tmp/openstack_c.zea
 

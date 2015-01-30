@@ -3,13 +3,13 @@
 # Values
 
 HOSTIP=`ifconfig|grep 'inet addr:'|grep -v '127.0.0.1'|grep -v '192.168.122.1'|cut -d: -f2|awk '{print $1}'`
-CEILOMETER_TOKEN=$(openssl rand -hex 10)
+CEILOMETER_TOKEN="ZEASTION"
 
 # Database
 
 mongo --host $HOSTIP --eval 'db=db.getSiblingDB("ceilometer");db.addUser({user: "ceilometer",pwd: "ceilometer",roles: [ "readWrite", "dbAdmin" ]})'
 
-if [ $? -ne 0 ];then
+if [ $? -eq 0 ];then
   echo "Create db for CEILOMETER successfully" >> /tmp/openstack.zea
 else
   echo "Create db for CEILOMETER failed" >> /tmp/openstack.zea
@@ -18,8 +18,8 @@ fi
 
 # Modify ceilometer configuration files
 
-penstack-config --set /etc/ceilometer/ceilometer.conf database connection mongodb://ceilometer:ceilometer@$HOSTIP:27017/ceilometer
-echo "Glance connect to MongoDB" >> /tmp/openstack.zea
+openstack-config --set /etc/ceilometer/ceilometer.conf database connection mongodb://ceilometer:ceilometer@$HOSTIP:27017/ceilometer
+echo "Ceilometer connect to MongoDB" >> /tmp/openstack.zea
 
 openstack-config --set /etc/ceilometer/ceilometer.conf publisher metering_secret $CEILOMETER_TOKEN
 if [ $? -eq 0 ];then
