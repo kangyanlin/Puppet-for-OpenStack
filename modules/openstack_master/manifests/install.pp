@@ -3,7 +3,7 @@ class openstack_master::install{
 }
 
 class base_install{
-  package { ['ntp', 'yum-plugin-priorities', 'openstack-utils', 'openstack-selinux', 'mysql-server', 'mysql', 'MySQL-python', 'qpid-cpp-server']:
+  package { ['ntp', 'httpd', 'yum-plugin-priorities', 'openstack-utils', 'openstack-selinux', 'mysql-server', 'mysql', 'MySQL-python', 'qpid-cpp-server', 'ganglia', 'ganglia-web', 'ganglia-gmond', 'ganglia-gmetad']:
     require => Class['yum_config'],
     ensure  => installed,
   }

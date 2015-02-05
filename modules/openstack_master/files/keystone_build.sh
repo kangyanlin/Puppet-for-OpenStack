@@ -23,8 +23,12 @@ iptables -I INPUT -p tcp --dport 80 -j ACCEPT
 iptables -I INPUT -p tcp --dport 5672 -j ACCEPT
 iptables -I INPUT -p tcp --dport 9292 -j ACCEPT
 iptables -I INPUT -p tcp --dport 8777 -j ACCEPT
+iptables -I INPUT -p tcp --dport 8649 -j ACCEPT
+iptables -I INPUT -p tcp --dport 8651 -j ACCEPT
+iptables -I INPUT -p tcp --dport 8652 -j ACCEPT
+iptables -I INPUT -p udp --dport 8649 -j ACCEPT
 service iptables save
-echo -e "Open Port 80 for Dashboard\nOpen Port 5672 for Qpid\nOpen Port 9292 for Glance\nOpen Port 8777 for Ceilometer" >> /tmp/openstack.zea
+echo -e "Open Port 80 for Dashboard\nOpen Port 5672 for Qpid\nOpen Port 9292 for Glance\nOpen Port 8777 for Ceilometer\nOpen Port 8649-8651-8652 for Ganglia" >> /tmp/openstack.zea
 
 # Export
 

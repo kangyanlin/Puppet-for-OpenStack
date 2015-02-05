@@ -1,5 +1,5 @@
 class openstack_master::service{
-  include net_service, ntp_service, sql_service, mess_service, keystone_service, glance_service, nova_service, dashboard_service, telemetry_service
+  include net_service, ntp_service, ganglia_service, sql_service, mess_service, keystone_service, glance_service, nova_service, dashboard_service, telemetry_service
 }
 
 class net_service{
@@ -18,6 +18,15 @@ class net_service{
 
 class ntp_service{
   service{ 'ntpd':
+    ensure     => running,
+    hasstatus  => true,
+    hasrestart => true,
+    enable     => true,
+  }
+}
+
+class ganglia_service{
+  service{ ['gmetad', 'gmond']:
     ensure     => running,
     hasstatus  => true,
     hasrestart => true,

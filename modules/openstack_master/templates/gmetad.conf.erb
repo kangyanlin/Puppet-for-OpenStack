@@ -1,0 +1,4 @@
+############ Puppet - OpenStack Master - Zeastion ############
+# Add hostname from Web 
+data_source "OpenStack" <%= scope.lookupvar('openstack_master::params::masternm') %> host02.server.cs2c
+case_sensitive_hostnames 1

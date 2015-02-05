@@ -1,5 +1,5 @@
 class openstack_master::config{
-  include yum_config, sql_config, mess_config, keystone_config, keystone_build, glance_config, nova_config, dashboard_config, telemetry_config
+  include yum_config, ganglia_config, sql_config, mess_config, keystone_config, keystone_build, glance_config, nova_config, dashboard_config, telemetry_config
 }
 
 class yum_config{
@@ -12,6 +12,40 @@ class yum_config{
   exec { 'yum_config':
     creates => '/etc/yum.repos.d/rdo-release.repo',
     command => '/bin/sh /tmp/yum_config.sh',
+  }
+}
+
+class ganglia_config{
+  include openstack_master::params
+  file { 'gmetad.conf':
+    ensure  => present,
+    content => template('openstack_master/gmetad.conf.erb'),
+    path    => '/etc/ganglia/gmetad.conf',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    require => Package['ganglia-gmetad'],
+    notify  => Service['gmetad'],
+  }
+  file { 'gmond.conf':
+    ensure  => present,
+    content => template('openstack_master/gmond.conf.erb'),
+    path    => '/etc/ganglia/gmond.conf',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    require => Package['ganglia-gmond'],
+    notify  => Service['gmond'],
+  }
+  file { 'ganglia.conf':
+    ensure  => present,
+    content => template('openstack_master/ganglia.conf.erb'),
+    path    => '/etc/httpd/conf.d/ganglia.conf',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    require => Class['ganglia_service'],
+    notify  => Service['httpd'],
   }
 }
 

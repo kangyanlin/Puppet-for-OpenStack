@@ -1,5 +1,5 @@
 class openstack_node::service{
-  include net_c_service, ntp_c_service, nova_c_service, telemetry_c_service
+  include net_c_service, ntp_c_service, ganglia_c_service, nova_c_service, telemetry_c_service
 }
 
 class net_c_service{
@@ -18,6 +18,15 @@ class net_c_service{
 
 class ntp_c_service{
   service{ 'ntpd':
+    ensure     => running,
+    hasstatus  => true,
+    hasrestart => true,
+    enable     => true,
+  }
+}
+
+class ganglia_c_service{
+  service{ 'gmond':
     ensure     => running,
     hasstatus  => true,
     hasrestart => true,

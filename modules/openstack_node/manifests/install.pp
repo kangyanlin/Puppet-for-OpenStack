@@ -3,7 +3,7 @@ class openstack_node::install{
 }
 
 class base_c_install{
-  package { ['ntp', 'yum-plugin-priorities', 'openstack-utils', 'openstack-selinux', 'MySQL-python']:
+  package { ['ntp', 'ganglia', 'ganglia-gmond', 'yum-plugin-priorities', 'openstack-utils', 'openstack-selinux', 'MySQL-python']:
     require => Class['yum_c_config'],
     ensure  => installed,
   }

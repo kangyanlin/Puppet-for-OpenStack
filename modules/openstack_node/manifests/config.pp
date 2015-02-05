@@ -1,5 +1,5 @@
 class openstack_node::config{
-  include yum_c_config, net_c_config, nova_c_config, telemetry_c_config
+  include yum_c_config, net_c_config, ganglia_c_config, nova_c_config, telemetry_c_config
 }
 
 class yum_c_config{
@@ -11,18 +11,32 @@ class yum_c_config{
   }
   exec { 'yum_c_config':
     creates => '/etc/yum.repos.d/rdo-release.repo',
-    command => '/bin/sh /tmp/yum_config.sh',
+    command => '/bin/sh /tmp/yum_c_config.sh',
   }
 }
 
 class net_c_config{
   file { '/etc/sysconfig/network-scripts/ifcfg-eth1':
     ensure  => present,
-    content => template('openstack_master/ifcfg-eth1.erb'),
+    content => template('openstack_node/ifcfg-eth1.erb'),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
     notify  => Class['net_c_service'],
+  }
+}
+
+class ganglia_c_config{
+  include openstack_node::params
+  file { 'gmond.conf':
+    ensure  => present,
+    content => template('openstack_node/gmond.conf.erb'),
+    path    => '/etc/ganglia/gmond.conf',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    require => Package['ganglia-gmond'],
+    notify  => Service['gmond'],
   }
 }
 

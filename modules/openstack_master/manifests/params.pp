@@ -1,3 +1,4 @@
 class openstack_master::params{
-  $hostip = "${::ipaddress_eth0}"
+  $masterip = "${::ipaddress_eth0}"
+  $masternm = "${::fqdn}"
 }

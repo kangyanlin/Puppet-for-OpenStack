@@ -2,7 +2,7 @@
 ##
 ### Basic Defaults
 ##
-bind_ip = <%= scope.lookupvar('openstack_master::params::hostip') %>
+bind_ip = <%= scope.lookupvar('openstack_master::params::masterip') %>
 port = 27017
 fork = true
 pidfilepath = /var/run/mongodb/mongodb.pid
