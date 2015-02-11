@@ -2,7 +2,7 @@
 
 # Values
 
-MASTERIP="10.2.20.175"
+MASTERIP=`more /tmp/base.info | grep "MASTERIP" | awk '{print $3}'`
 CEILOMETER_TOKEN="ZEASTION"
 
 # Modify NOVA configuration file for Telemetry

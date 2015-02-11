@@ -4,14 +4,23 @@
 
 HOSTNM=`hostname`
 HOSTIP=`ifconfig|grep 'inet addr:'|grep -v '127.0.0.1'|grep -v '192.168.122.1'|cut -d: -f2|awk '{print $1}'`
-MASTERIP="10.2.20.175"
-MASTERNM="host01.server.cs2c"
+MASTERIP=`more /tmp/base.info | grep "MASTERIP" | awk '{print $3}'`
+MASTERNM=`more /tmp/base.info | grep "MASTERNM" | awk '{print $3}'`
 
 # Set FQDN
 
 echo -e "$MASTERIP\t$MASTERNM\n$HOSTIP\t$HOSTNM" >> /etc/hosts
 
 echo -e "MASTERIP is $MASTERIP | HOSTIP is $HOSTIP" >> /tmp/openstack_c.zea
+
+# Firewall
+
+iptables -I INPUT -p tcp --dport 8649 -j ACCEPT
+iptables -I INPUT -p udp --dport 8649 -j ACCEPT
+service iptables save
+sed -i.bak "s/.*icmp-host-prohibited.*/#icmp-host-prohibited/g" /etc/sysconfig/iptables
+service iptables restart
+echo "Modify iptables successfully" >> /tmp/openstack_c.zea
 
 # Modify nova (compute node) configuration files
 

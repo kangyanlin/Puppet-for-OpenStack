@@ -1,5 +1,17 @@
 class openstack_master::config{
-  include yum_config, ganglia_config, sql_config, mess_config, keystone_config, keystone_build, glance_config, nova_config, dashboard_config, telemetry_config
+  include base_config, yum_config, ganglia_config, sql_config, mess_config, keystone_config, keystone_build, glance_config, nova_config, dashboard_config, telemetry_config
+}
+
+class base_config{
+  include openstack_master::params
+  file { 'base.info':
+    ensure  => present,
+    content => template('openstack_master/base.info.erb'),
+    path    => '/tmp/base.info',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+  }
 }
 
 class yum_config{
@@ -12,6 +24,7 @@ class yum_config{
   exec { 'yum_config':
     creates => '/etc/yum.repos.d/rdo-release.repo',
     command => '/bin/sh /tmp/yum_config.sh',
+    require => Class['base_config'],
   }
 }
 

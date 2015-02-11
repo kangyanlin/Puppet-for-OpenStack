@@ -2,9 +2,9 @@
 
 # Values
 
-ADMIN="admin"
-PASSWD="zeastion"
-EMAIL="zeastion@live.cn"
+ADMIN=`more /tmp/base.info | grep "ADMIN" | awk '{print $3}'`
+PASSWD=`more /tmp/base.info | grep "PASSWD" | awk '{print $3}'`
+EMAIL=`more /tmp/base.info | grep "EMAIL" | awk '{print $3}'`
 
 HOSTIP=`ifconfig|grep 'inet addr:'|grep -v '127.0.0.1'|grep -v '192.168.122.1'|cut -d: -f2|awk '{print $1}'`
 ADMIN_TOKEN=`more /tmp/openstack.zea|grep 'ADMIN_TOKEN'|awk '{print $3}'`
@@ -20,6 +20,7 @@ fi
 # Firewall
 
 iptables -I INPUT -p tcp --dport 80 -j ACCEPT
+iptables -I INPUT -p tcp --dport 3306 -j ACCEPT
 iptables -I INPUT -p tcp --dport 5672 -j ACCEPT
 iptables -I INPUT -p tcp --dport 9292 -j ACCEPT
 iptables -I INPUT -p tcp --dport 8777 -j ACCEPT
@@ -28,7 +29,7 @@ iptables -I INPUT -p tcp --dport 8651 -j ACCEPT
 iptables -I INPUT -p tcp --dport 8652 -j ACCEPT
 iptables -I INPUT -p udp --dport 8649 -j ACCEPT
 service iptables save
-echo -e "Open Port 80 for Dashboard\nOpen Port 5672 for Qpid\nOpen Port 9292 for Glance\nOpen Port 8777 for Ceilometer\nOpen Port 8649-8651-8652 for Ganglia" >> /tmp/openstack.zea
+echo -e "Open Port 80 for Dashboard\nOpen Port 3306 for MySQL\nOpen Port 5672 for Qpid\nOpen Port 9292 for Glance\nOpen Port 8777 for Ceilometer\nOpen Port 8649-8651-8652 for Ganglia" >> /tmp/openstack.zea
 
 # Export
 

@@ -1,5 +1,17 @@
 class openstack_node::config{
-  include yum_c_config, net_c_config, ganglia_c_config, nova_c_config, telemetry_c_config
+  include base_c_config, yum_c_config, net_c_config, ganglia_c_config, nova_c_config, telemetry_c_config
+}
+
+class base_c_config{
+  include openstack_node::params
+  file { 'base.info':
+    ensure  => present,
+    content => template('openstack_node/base.info.erb'),
+    path    => '/tmp/base.info',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+  }
 }
 
 class yum_c_config{
@@ -12,6 +24,7 @@ class yum_c_config{
   exec { 'yum_c_config':
     creates => '/etc/yum.repos.d/rdo-release.repo',
     command => '/bin/sh /tmp/yum_c_config.sh',
+    require => Class['base_c_config'],
   }
 }
 
@@ -56,6 +69,9 @@ class nova_c_config{
 }
 
 class telemetry_c_config{
+  
+  include openstack_node::params
+
   file { 'telemetry_c_config.sh':
     ensure  => present,
     mode    => '0755',

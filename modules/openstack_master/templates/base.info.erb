@@ -1,0 +1,6 @@
+############ Puppet - OpenStack Master - Zeastion ############
+# About some base information
+#
+ADMIN = <%= scope.lookupvar('openstack_master::params::admin') %>
+PASSWD = <%= scope.lookupvar('openstack_master::params::passwd') %>
+EMAIL = <%= scope.lookupvar('openstack_master::params::email') %>
